@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Players>
+  <Player>
+    <Tag>Burst</Tag>
+    <Character>Inkling</Character>
+    <Alt>2</Alt>
+  </Player>
+  <Player>
+    <Tag>Detective</Tag>
+    <Character>Greninja</Character>
+    <Alt>0</Alt>
+  </Player>
+</Players>
