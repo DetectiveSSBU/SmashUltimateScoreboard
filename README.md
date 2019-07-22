@@ -1,9 +1,23 @@
 Scoreboard application desgined to make managing streams a lot easier for Smash Ultimate.
 
-Features:
+--Features--
 - Saving players' last used character and character alt
 - Dynamic Window layout dependant on bracket run (ie doubles)
 - It's cool
+
+--Video Tutorials--
+https://www.youtube.com/watch?v=EcXgwDN8_vQ
+
+--To-Do List--
+- test with streamlabs obs, xsplit, el gato
+- add ability to change/add round/brackets
+- add player by typing in combobox
+- delete players with right click
+- change character directory
+- make tutorial for setting up
+- smashgg integration or other sites
+- hotkeys
+
 
 --Changelong--
 
