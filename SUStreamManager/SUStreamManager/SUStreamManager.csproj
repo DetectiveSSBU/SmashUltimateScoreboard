@@ -63,12 +63,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DirectoryChange.xaml.cs">
+      <DependentUpon>DirectoryChange.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModifyText.xaml.cs">
+      <DependentUpon>ModifyText.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyList.cs" />
+    <Compile Include="PropertyWindow.xaml.cs">
+      <DependentUpon>PropertyWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RemovePlayers.xaml.cs">
       <DependentUpon>RemovePlayers.xaml</DependentUpon>
     </Compile>
     <Compile Include="TextOutputLocation.xaml.cs">
       <DependentUpon>TextOutputLocation.xaml</DependentUpon>
     </Compile>
+    <Page Include="DirectoryChange.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Input.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -89,6 +103,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ModifyText.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PropertyWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RemovePlayers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -125,9 +147,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\CharacterList.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Icons\" />

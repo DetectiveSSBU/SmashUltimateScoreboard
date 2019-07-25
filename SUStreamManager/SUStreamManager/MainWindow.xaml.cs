@@ -36,26 +36,110 @@ namespace SUStreamManager
 
         //Main Player list
         SortedDictionary<string,Player> players = new SortedDictionary<string, Player>();
+        //will hold character
+        List<string> characterNames = new List<string>();
+        //hold bracket types
+        List<string> bracketTypes = new List<string>();
+        //hold round types
+        List<string> roundTypes = new List<string>();
         int player1score = 0;
         int player2score = 0;
         string outputPath;
+        string characterPath;
+        string sponserPath;
         bool isDoubles = false;
+        PropertyList currentProperties;
         //Initialize all the main components of the program
         //will load data from text files to combo boxes etc...
         public void Initialize()
         {
-            //will hold character
-            List<string> characterNames = new List<string>();
-            //hold bracket types
-            List<string> bracketTypes = new List<string>();
-            //hold round types
-            List<string> roundTypes = new List<string>();
+            
 
             //get current saved directory (c:/) initially unless saved over
             outputPath = FileFunctions.ReadSavedDirectory();
 
+            //get current character directory, default is ..\\..\\Resources\\Icons
+            characterPath = FileFunctions.ReadFromLocation("..\\..\\Resources\\CharacterDirectory.txt");
+
+            //get current sponser directory, default is c:\
+            sponserPath = FileFunctions.ReadFromLocation("..\\..\\Resources\\SponserIconPath.txt");
+            
             //read the characters into a list
-            FileFunctions.ReadCharacters(ref characterNames, "..\\..\\Resources\\CharacterList.txt");
+            currentProperties = new PropertyList();
+            //load property configuration
+            FileFunctions.ReadConfigurationFromXML(ref currentProperties);
+
+            if (!currentProperties.isSponserIcons)
+            {
+                cbPlayer1TeamIcon.Visibility = Visibility.Collapsed;
+                cbPlayer2TeamIcon.Visibility = Visibility.Collapsed;
+                lblPlayer1Sponsor.Visibility = Visibility.Collapsed;
+                lblPlayer2Sponsor.Visibility = Visibility.Collapsed;
+                cbTeam1TeamIcon.Visibility = Visibility.Collapsed;
+                cbTeam2TeamIcon.Visibility = Visibility.Collapsed;
+
+                cbPlayer1TeamIcon.Margin = new Thickness(10, 0, 0, 0);
+                cbPlayer2TeamIcon.Margin = new Thickness(0, 0, 10, 0);
+            }
+            else
+            {
+                if (isDoubles)
+                {
+                    cbTeam1TeamIcon.Visibility = Visibility.Visible;
+                    cbTeam2TeamIcon.Visibility = Visibility.Visible;
+                    lblPlayer1Sponsor.Content = "Team1 Sponsors";
+                    lblPlayer2Sponsor.Content = "Team2 Sponsors";
+
+                    cbPlayer1TeamIcon.Margin = new Thickness(10, 0, 0, 30);
+                    cbPlayer2TeamIcon.Margin = new Thickness(0, 0, 10, 30);
+                }
+                
+                LoadPlayerSponsorIcons();
+            }
+
+            if (currentProperties.isTwitterHandle)
+            {
+                tbPlayer1Twitter.Visibility = Visibility.Visible;
+                tbPlayer2Twitter.Visibility = Visibility.Visible;
+                cbPlayerName1.Margin = new Thickness(10, 0, 0, 0);
+                cbPlayerName2.Margin = new Thickness(0, 0, 10, 0);
+                cbPlayerTeam1.Margin = new Thickness(110, 0, 0, 0);
+                cbPlayerTeam2.Margin = new Thickness(0, 0, 110, 0);
+            }
+            else
+            {
+                tbPlayer1Twitter.Visibility = Visibility.Collapsed;
+                tbPlayer2Twitter.Visibility = Visibility.Collapsed;
+                cbPlayerName1.Margin = new Thickness(10, 15, 0, 0);
+                cbPlayerName2.Margin = new Thickness(0, 15, 10, 0);
+                cbPlayerTeam1.Margin = new Thickness(110, 15, 0, 0);
+                cbPlayerTeam2.Margin = new Thickness(0, 15, 110, 0);
+            }
+
+            if (currentProperties.isCommentatorTags)
+            {
+                cbCommentator1.Visibility = Visibility.Visible;
+                cbCommentator2.Visibility = Visibility.Visible;
+                lblComm1.Visibility = Visibility.Visible;
+                lblComm2.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                cbCommentator1.Visibility = Visibility.Collapsed;
+                cbCommentator2.Visibility = Visibility.Collapsed;
+                lblComm1.Visibility = Visibility.Collapsed;
+                lblComm2.Visibility = Visibility.Collapsed;
+
+            }
+
+            try
+            {
+                FileFunctions.ReadCharacters(ref characterNames, characterPath, true);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show("Could not load Character Icons...\n Please select a new directory in Options.","Error during loading",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
             //populate the comboboxes
             foreach(string name in characterNames)
             {
@@ -100,6 +184,8 @@ namespace SUStreamManager
                 cbPlayerName2.Items.Add(entry.Key);
                 cbPlayerTeam1.Items.Add(entry.Key);
                 cbPlayerTeam2.Items.Add(entry.Key);
+                cbCommentator1.Items.Add(entry.Key);
+                cbCommentator2.Items.Add(entry.Key);
             }
         }
 
@@ -107,34 +193,38 @@ namespace SUStreamManager
         public void RefreshIconComboBox(int playerNum)
         {
             List<Image> Icons = new List<Image>();
-            if(playerNum == 1)
-            {
-                //get all the icons
-                FileFunctions.ReadIcons(ref Icons, cbPlayer1Character.SelectedItem.ToString());
-
-                //clear the current icons
-                cbPlayer1Icon.Items.Clear();
-
-                //populate the new icons
-                foreach(Image img in Icons)
+            
+                if (playerNum == 1 && cbPlayer1Character.SelectedItem != null)
                 {
-                    cbPlayer1Icon.Items.Add(img);
-                }
-                cbPlayer1Icon.SelectedIndex = 0;
-            }
-            else if(playerNum == 2)
-            {
-                FileFunctions.ReadIcons(ref Icons, cbPlayer2Character.SelectedItem.ToString());
+                    //get all the icons
 
-                cbPlayer2Icon.Items.Clear();
-                foreach (Image img in Icons)
-                {
-                    cbPlayer2Icon.Items.Add(img);
+                    FileFunctions.ReadIcons(ref Icons, cbPlayer1Character.SelectedItem.ToString(), characterPath, isDoubles);
+
+                    //clear the current icons
+                    cbPlayer1Icon.Items.Clear();
+
+                    //populate the new icons
+                    foreach (Image img in Icons)
+                    {
+                        cbPlayer1Icon.Items.Add(img);
+                    }
+                    cbPlayer1Icon.SelectedIndex = 0;
                 }
-                cbPlayer2Icon.SelectedIndex = 0;
-            }
+                else if (playerNum == 2 && cbPlayer2Character.SelectedItem != null)
+                {
+
+                    FileFunctions.ReadIcons(ref Icons, cbPlayer2Character.SelectedItem.ToString(), characterPath, isDoubles);
+
+                    cbPlayer2Icon.Items.Clear();
+                    foreach (Image img in Icons)
+                    {
+                        cbPlayer2Icon.Items.Add(img);
+                    }
+                    cbPlayer2Icon.SelectedIndex = 0;
+                }
+            
+          
         }
-
         //Used to update the character and icon based on tag selected
         public void RefreshCharacter(int player)
         {
@@ -144,11 +234,13 @@ namespace SUStreamManager
                 //pull information from dictionary using string in combobox as the key
                 cbPlayer1Character.SelectedItem = players[cbPlayerName1.SelectedItem.ToString()].GetCharacter();
                 cbPlayer1Icon.SelectedIndex = players[cbPlayerName1.SelectedItem.ToString()].GetAlt();
+                tbPlayer1Twitter.Text = players[cbPlayerName1.SelectedItem.ToString()].GetTwitter();
             }
             else if (player == 2 && cbPlayerName2.SelectedItem != null)
             {
                 cbPlayer2Character.SelectedItem = players[cbPlayerName2.SelectedItem.ToString()].GetCharacter();
                 cbPlayer2Icon.SelectedIndex = players[cbPlayerName2.SelectedItem.ToString()].GetAlt();
+                tbPlayer2Twitter.Text = players[cbPlayerName2.SelectedItem.ToString()].GetTwitter();
             }
         }
 
@@ -166,7 +258,8 @@ namespace SUStreamManager
                 string tempScore = tbScore1.Text;
                 int tempIntScore = player1score;
                 bool tempInLosers = chkPlayer1Loser.IsChecked.Value;
-                
+                int tempLogoIndex = cbPlayer1TeamIcon.SelectedIndex;
+                int tempTeamLogoIndex = cbTeam1TeamIcon.SelectedIndex;
 
                 cbPlayerName1.SelectedItem = cbPlayerName2.SelectedItem;
                 cbPlayer1Character.SelectedItem = cbPlayer2Character.SelectedItem;
@@ -174,6 +267,8 @@ namespace SUStreamManager
                 tbScore1.Text = tbScore2.Text;
                 player1score = player2score;
                 chkPlayer1Loser.IsChecked = chkPlayerLoser2.IsChecked.Value;
+                cbPlayer1TeamIcon.SelectedIndex = cbPlayer2TeamIcon.SelectedIndex;
+                cbTeam1TeamIcon.SelectedIndex = cbTeam2TeamIcon.SelectedIndex;
 
                 cbPlayerName2.SelectedItem = tempName;
                 cbPlayer2Character.SelectedItem = tempChar;
@@ -181,7 +276,8 @@ namespace SUStreamManager
                 tbScore2.Text = tempScore;
                 player2score = tempIntScore;
                 chkPlayerLoser2.IsChecked = tempInLosers;
-
+                cbPlayer2TeamIcon.SelectedIndex = tempLogoIndex;
+                cbTeam2TeamIcon.SelectedIndex = tempTeamLogoIndex;
                 //check to see if swap is needed for doubles
                 if (cbPlayerTeam1.SelectedItem != null && cbPlayerTeam2.SelectedItem != null)
                 {
@@ -203,6 +299,8 @@ namespace SUStreamManager
             {
                 outputPath = to.GetPath();
                 FileFunctions.SaveDirectory(outputPath);
+
+              
             }
 
             to.Close();
@@ -227,12 +325,16 @@ namespace SUStreamManager
                     var tempName2 = cbPlayerName2.SelectedItem;
                     var tempTeam1 = cbPlayerTeam1.SelectedItem;
                     var tempTeam2 = cbPlayerTeam2.SelectedItem;
+                    var tempComm1 = cbCommentator1.SelectedItem;
+                    var tempComm2 = cbCommentator2.SelectedItem;
 
                     //clearing the comboxes
                     cbPlayerName1.Items.Clear();
                     cbPlayerName2.Items.Clear();
                     cbPlayerTeam1.Items.Clear();
                     cbPlayerTeam2.Items.Clear();
+                    cbCommentator1.Items.Clear();
+                    cbCommentator2.Items.Clear();
 
                     //repopulated the combobxes because this was the easiest way to sort
                     //curtesy of using a sorted dictionary
@@ -242,6 +344,8 @@ namespace SUStreamManager
                         cbPlayerName2.Items.Add(entry.Key);
                         cbPlayerTeam1.Items.Add(entry.Key);
                         cbPlayerTeam2.Items.Add(entry.Key);
+                        cbCommentator1.Items.Add(entry.Key);
+                        cbCommentator2.Items.Add(entry.Key);
                     }
 
                     //double checking to make sure the comboboxes had values to begin with
@@ -253,7 +357,11 @@ namespace SUStreamManager
                         cbPlayerTeam1.SelectedItem = tempTeam1;
                     if (tempTeam2 != null)
                         cbPlayerTeam2.SelectedItem = tempTeam2;
-                
+                    if (tempComm1 != null)
+                        cbCommentator1.SelectedItem = tempComm1;
+                    if (tempComm2 != null)
+                        cbCommentator2.SelectedItem = tempComm2;
+
                 }
             }
          
@@ -287,6 +395,8 @@ namespace SUStreamManager
                         cbPlayerName2.Items.Remove(name);
                         cbPlayerTeam1.Items.Remove(name);
                         cbPlayerTeam2.Items.Remove(name);
+                        cbCommentator1.Items.Remove(name);
+                        cbCommentator2.Items.Remove(name);
                     }
                 }
             }
@@ -326,11 +436,12 @@ namespace SUStreamManager
         }
 
         //Update locally stored player information in the dictionary
-        public void UpdatePlayer(string name, string character, int alt)
+        public void UpdatePlayer(string name, string character, int alt, string twitter)
         {
          
                 players[name].SetCharacter(character);
                 players[name].SetAlt(alt);
+                players[name].setTwitter(twitter);
             
         }
 
@@ -348,17 +459,45 @@ namespace SUStreamManager
             //check to see if doubles is checked
             if(isDoubles && cbPlayerTeam1.SelectedItem != null && cbPlayerTeam2.SelectedItem != null)
             {
-                name1 += " + " + cbPlayerTeam1.SelectedItem.ToString();
-                name2 = cbPlayerTeam2.SelectedItem.ToString() + " + " + name2;
+                name1 += " & " + cbPlayerTeam1.SelectedItem.ToString();
+                name2 = cbPlayerTeam2.SelectedItem.ToString() + " & " + name2;
             }
 
             if (cbBracket.SelectedItem.ToString() == "Money Match")
                 roundString = "";
 
+            Image teamIcon1 = (Image)cbPlayer1TeamIcon.SelectedItem;
+            Image teamIcon2 = (Image)cbPlayer2TeamIcon.SelectedItem;
+
+            Image teamTeamIcon1 = (Image)cbTeam1TeamIcon.SelectedItem;
+            Image teamTeamIcon2 = (Image)cbTeam2TeamIcon.SelectedItem;
+
+            if (!currentProperties.isSponserIcons)
+            {
+                teamIcon1 = null;
+                teamIcon2 = null;
+                teamTeamIcon1 = null;
+                teamTeamIcon2 = null;
+            }
+            if (!isDoubles)
+            {
+                teamTeamIcon1 = null;
+                teamTeamIcon2 = null;
+            }
+            string comm1 = "";
+            string comm2 = "";
+
+            if (cbCommentator1.SelectedItem != null)
+                comm1 = cbCommentator1.SelectedItem.ToString();
+            if (cbCommentator2.SelectedItem != null)
+                comm2 = cbCommentator2.SelectedItem.ToString();
+
             //the big long messy function with too many parameters that writes all the scoreboard information
             FileFunctions.UpdateAllTextOutputFiles(outputPath, name1, Int32.Parse(tbScore1.Text), name2,
                 Int32.Parse(tbScore2.Text), roundString, roundNumber, cbBracket.SelectedItem.ToString(), (bool) chkPlayer1Loser.IsChecked, 
-                (bool) chkPlayerLoser2.IsChecked, (Image) cbPlayer1Icon.SelectedItem, (Image)cbPlayer2Icon.SelectedItem);
+                (bool) chkPlayerLoser2.IsChecked, (Image) cbPlayer1Icon.SelectedItem, (Image)cbPlayer2Icon.SelectedItem, teamIcon1, teamIcon2,
+                tbPlayer1Twitter.Text,tbPlayer2Twitter.Text, currentProperties.isTwitterHandle,comm1,comm2, currentProperties.isCommentatorTags,
+                teamTeamIcon1, teamTeamIcon2);
 
             //save current player information to an xml file
             FileFunctions.SavePlayersToXML(players);
@@ -380,8 +519,20 @@ namespace SUStreamManager
                 lblSide1.Content = "Team 1";
                 lblSide2.Content = "Team 2";
 
-                cbPlayer1Character.SelectedItem = "Yoshi";
-                cbPlayer2Character.SelectedItem = "Yoshi";
+                //cbPlayer1Character.SelectedItem = "Yoshi";
+                //cbPlayer2Character.SelectedItem = "Yoshi";
+
+                if (currentProperties.isSponserIcons)
+                {
+                    cbTeam1TeamIcon.Visibility = Visibility.Visible;
+                    cbTeam2TeamIcon.Visibility = Visibility.Visible;
+                    lblPlayer1Sponsor.Content = "Team1 Sponsors";
+                    lblPlayer2Sponsor.Content = "Team2 Sponsors";
+
+                    cbPlayer1TeamIcon.Margin = new Thickness(10, 0, 0, 30);
+                    cbPlayer2TeamIcon.Margin = new Thickness(0, 0, 10, 30);
+                }
+
                 cbPlayer1Icon.SelectedIndex = 0;
                 cbPlayer2Icon.SelectedIndex = 0;
                 cbPlayer1Character.Visibility = Visibility.Collapsed;
@@ -403,6 +554,18 @@ namespace SUStreamManager
 
                 cbPlayer1Character.Visibility = Visibility.Visible;
                 cbPlayer2Character.Visibility = Visibility.Visible;
+
+                if (currentProperties.isSponserIcons)
+                {
+                    cbTeam1TeamIcon.Visibility = Visibility.Collapsed;
+                    cbTeam2TeamIcon.Visibility = Visibility.Collapsed;
+                    lblPlayer1Sponsor.Content = "P1 Sponsor";
+                    lblPlayer2Sponsor.Content = "P2 Sponsor";
+
+                    cbPlayer1TeamIcon.Margin = new Thickness(10, 0, 0, 0);
+                    cbPlayer2TeamIcon.Margin = new Thickness(0, 0, 10, 0);
+                }
+
                 RefreshCharacter(1);
                 RefreshCharacter(2);
                 RefreshIconComboBox(1);
@@ -414,6 +577,206 @@ namespace SUStreamManager
                 }
             }
         }
+
+        //this is gonna be a nightmare, oh well...
+        public void ViewDirectories()
+        {
+            DirectoryChange viewDirectories = new DirectoryChange(characterPath, sponserPath,outputPath);
+
+            if (viewDirectories.ShowDialog() == true)
+            {
+                string returnedPath = viewDirectories.GetCharacterPath();
+                //oh boy, now we get to switch all the characters and refresh everything
+                if(returnedPath != characterPath)
+                {
+                    characterPath = returnedPath;
+                    //clear original items
+                    characterNames.Clear();
+                    cbPlayer1Character.Items.Clear();
+                    cbPlayer2Character.Items.Clear();
+                    //read the characters into a list
+                    FileFunctions.ReadCharacters(ref characterNames, characterPath, true);
+                    //populate the comboboxes
+                    foreach (string name in characterNames)
+                    {
+                        cbPlayer1Character.Items.Add(name);
+                        cbPlayer2Character.Items.Add(name);
+                    }
+                    //sets default character to first in the list
+                    cbPlayer1Character.SelectedIndex = 0;
+                    cbPlayer2Character.SelectedIndex = 0;
+
+                    //reset all players' character to a default
+                    foreach (KeyValuePair<string, Player> entry in players)
+                    {
+                        entry.Value.SetCharacter(cbPlayer1Character.Text);
+                        entry.Value.SetAlt(0);
+                    }
+
+                    RefreshIconComboBox(1);
+                    RefreshIconComboBox(2);
+
+                    //save changes to character location text file
+                    File.WriteAllText("..//..//Resources//CharacterDirectory.txt", characterPath);
+
+                }
+                File.WriteAllText("..//..//Resources//SponserIconPath.txt", viewDirectories.GetSponserPath());
+                outputPath = viewDirectories.GetOutputPath();
+                sponserPath = viewDirectories.GetSponserPath();
+            }
+            viewDirectories.Close();
+
+        }
+
+        public void LoadPlayerSponsorIcons()
+        {
+            try
+            {
+                List<Image> images = new List<Image>();
+                FileFunctions.ReadTeamLogos(ref images, sponserPath);
+
+                cbPlayer1TeamIcon.Items.Clear();
+                cbPlayer2TeamIcon.Items.Clear();
+                cbTeam1TeamIcon.Items.Clear();
+                cbTeam2TeamIcon.Items.Clear();
+                //populate the new icons
+
+                foreach (Image img in images)
+                {
+                    cbPlayer1TeamIcon.Items.Add(img);
+                    
+                }
+                FileFunctions.ReadTeamLogos(ref images, sponserPath);
+                
+                foreach (Image img in images)
+                {
+                    cbPlayer2TeamIcon.Items.Add(img);
+
+                }
+                FileFunctions.ReadTeamLogos(ref images, sponserPath);
+
+                foreach (Image img in images)
+                {
+                    cbTeam1TeamIcon.Items.Add(img);
+
+                }
+                FileFunctions.ReadTeamLogos(ref images, sponserPath);
+
+                foreach (Image img in images)
+                {
+                    cbTeam2TeamIcon.Items.Add(img);
+
+                }
+                //cbPlayer1TeamIcon.SelectedIndex = 0;
+                //cbPlayer2TeamIcon.SelectedIndex = 0;
+            }
+            catch(Exception e)
+            {
+                currentProperties.isSponserIcons = false;
+                MessageBox.Show("Could not load logos from desired location...\nPlease try again","Error loading logos!",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+        }
+
+        public void OpenProperties()
+        {
+            PropertyWindow properties= new PropertyWindow(currentProperties);
+            this.Topmost = false;
+            if (properties.ShowDialog() == true)
+            {
+                currentProperties = properties.GetPendingProperties();
+
+                FileFunctions.SaveConfigurationToXML(currentProperties);
+
+                if(!currentProperties.isWindowOnTop)
+                    this.Topmost = false;
+
+                if (!currentProperties.isSponserIcons)
+                {
+                    cbPlayer1TeamIcon.Visibility = Visibility.Collapsed;
+                    cbPlayer2TeamIcon.Visibility = Visibility.Collapsed;
+                    lblPlayer1Sponsor.Visibility = Visibility.Collapsed;
+                    lblPlayer2Sponsor.Visibility = Visibility.Collapsed;
+                    cbTeam1TeamIcon.Visibility = Visibility.Collapsed;
+                    cbTeam2TeamIcon.Visibility = Visibility.Collapsed;
+                    lblPlayer1Sponsor.Content = "P1 Sponsor";
+                    lblPlayer2Sponsor.Content = "P2 Sponsor";
+                    cbPlayer1TeamIcon.Margin = new Thickness(10, 0, 0, 0);
+                    cbPlayer2TeamIcon.Margin = new Thickness(0, 0, 10, 0);
+                }
+                else
+                {
+                    cbPlayer1TeamIcon.Visibility = Visibility.Visible;
+                    cbPlayer2TeamIcon.Visibility = Visibility.Visible;
+                    lblPlayer1Sponsor.Visibility = Visibility.Visible;
+                    lblPlayer2Sponsor.Visibility = Visibility.Visible;
+                    if (isDoubles)
+                    {
+                        cbTeam1TeamIcon.Visibility = Visibility.Visible;
+                        cbTeam2TeamIcon.Visibility = Visibility.Visible;
+                        lblPlayer1Sponsor.Content = "Team1 Sponsors";
+                        lblPlayer2Sponsor.Content = "Team2 Sponsors";
+
+                        cbPlayer1TeamIcon.Margin = new Thickness(10, 0, 0, 30);
+                        cbPlayer2TeamIcon.Margin = new Thickness(0, 0, 10, 30);
+                    }
+                    LoadPlayerSponsorIcons();
+                }
+
+                if (currentProperties.isTwitterHandle)
+                {
+                    tbPlayer1Twitter.Visibility = Visibility.Visible;
+                    tbPlayer2Twitter.Visibility = Visibility.Visible;
+                    cbPlayerName1.Margin = new Thickness(10, 0, 0, 0);
+                    cbPlayerName2.Margin = new Thickness(0, 0, 10, 0);
+                    cbPlayerTeam1.Margin = new Thickness(110, 0, 0, 0);
+                    cbPlayerTeam2.Margin = new Thickness(0, 0, 110, 0);
+                }
+                else
+                {
+                    tbPlayer1Twitter.Visibility = Visibility.Collapsed;
+                    tbPlayer2Twitter.Visibility = Visibility.Collapsed;
+                    cbPlayerName1.Margin = new Thickness(10, 15, 0, 0);
+                    cbPlayerName2.Margin = new Thickness(0, 15, 10, 0);
+
+                    cbPlayerTeam1.Margin = new Thickness(110, 15, 0, 0);
+                    cbPlayerTeam2.Margin = new Thickness(0, 15, 110, 0);
+                }
+
+                if (currentProperties.isCommentatorTags)
+                {
+                    cbCommentator1.Visibility = Visibility.Visible;
+                    cbCommentator2.Visibility = Visibility.Visible;
+                    lblComm1.Visibility = Visibility.Visible;
+                    lblComm2.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    cbCommentator1.Visibility = Visibility.Collapsed;
+                    cbCommentator2.Visibility = Visibility.Collapsed;
+                    lblComm1.Visibility = Visibility.Collapsed;
+                    lblComm2.Visibility = Visibility.Collapsed;
+
+                }
+
+            }
+
+            properties.Close();
+        }
+
+
+        public void OpenModifyTextWindow(List<string> content)
+        {
+
+            
+            ModifyText modifyTextWindow = new ModifyText(content);
+
+            if (modifyTextWindow.ShowDialog() == true)
+            {
+
+            }
+
+            modifyTextWindow.Close();
+            }
 
         //event handlers
 
@@ -504,13 +867,13 @@ namespace SUStreamManager
                 {
                     UpdatePlayer(cbPlayerName1.SelectedItem.ToString(),
                         cbPlayer1Character.SelectedItem.ToString(),
-                        cbPlayer1Icon.SelectedIndex);
+                        cbPlayer1Icon.SelectedIndex, tbPlayer1Twitter.Text);
                 }
                 if (cbPlayerName2.SelectedItem != null)
                 {
                     UpdatePlayer(cbPlayerName2.SelectedItem.ToString(),
                         cbPlayer2Character.SelectedItem.ToString(),
-                        cbPlayer2Icon.SelectedIndex);
+                        cbPlayer2Icon.SelectedIndex,tbPlayer2Twitter.Text);
                 }
             }
             //Update Text Files
@@ -532,6 +895,39 @@ namespace SUStreamManager
         private void cbBracket_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CheckForDoubles();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            ViewDirectories();
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            OpenProperties();
+        }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            if (currentProperties.isWindowOnTop)
+            {
+                this.Topmost = true;
+                this.Activate();
+            }
+            else
+            {
+                this.Topmost = false;
+            }
+        }
+
+        private void btnAddRemoveBracket_Click(object sender, RoutedEventArgs e)
+        {
+            OpenModifyTextWindow(bracketTypes);
+        }
+
+        private void btnAddRemoveRound_Click(object sender, RoutedEventArgs e)
+        {
+            OpenModifyTextWindow(roundTypes);
         }
     }
 

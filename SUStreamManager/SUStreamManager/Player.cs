@@ -11,12 +11,14 @@ namespace SUStreamManager
         string playerTag;
         string lastCharacter;
         int lastAlt;
+        string twitterHandle;
 
         public Player()
         {
             playerTag = "";
             lastCharacter = "Bayonetta";
             lastAlt = 0;
+            twitterHandle = "@TwitterHandle";
         }
         public Player(string tag)
         {
@@ -58,6 +60,16 @@ namespace SUStreamManager
         public void SetAlt(int alt)
         {
             lastAlt = alt;
+        }
+
+        public string GetTwitter()
+        {
+            return twitterHandle;
+        }
+
+        public void setTwitter(string twitter)
+        {
+            twitterHandle = twitter;
         }
     }
 }
