@@ -26,11 +26,11 @@ namespace SUStreamManager
             tbInput.Focus();
         }
 
-        string playerName = "";
+        List<string> playerNames = new List<string>();
 
-        public string getName()
+        public List<string> getNames()
         {
-            return playerName;
+            return playerNames;
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -40,20 +40,22 @@ namespace SUStreamManager
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            playerName = tbInput.Text;
-            this.DialogResult = true;
-            this.Hide();
-        }
-
-        private void tbInput_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key != System.Windows.Input.Key.Enter) return;
-
             
-            e.Handled = true;
-            playerName = tbInput.Text;
+            for(int i = 0; i < tbInput.LineCount; i++)
+            {
+                string temp = tbInput.GetLineText(i);
+                if (temp.Contains("\n"))
+                    temp = temp.Remove(temp.Length - 1);
+                if (temp.Contains("\r"))
+                    temp = temp.Remove(temp.Length - 1);
+                if (temp.Length > 0)
+                    playerNames.Add(temp);
+            }
+
             this.DialogResult = true;
             this.Hide();
         }
+
+        
     }
 }

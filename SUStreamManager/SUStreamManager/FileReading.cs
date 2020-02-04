@@ -63,12 +63,12 @@ namespace SUStreamManager
 
         }
 
-        public static void ReadIcons(ref List<Image> c, string characterName, string newPath, bool isDubs = false)
+        public static void ReadIcons(ref List<Image> c, string characterName, string newPath,bool isFlags ,bool isDubs = false)
         {
             
 
-            string fullPath;
-            if (!isDubs)
+            string fullPath="";
+            if (!isDubs || !isFlags)
             {
                 if (newPath == "..\\..\\Resources\\Icons")
                 {
@@ -82,7 +82,7 @@ namespace SUStreamManager
                     fullPath = newPath + "\\" + characterName;
                 }
             }
-            else
+            else if (isFlags)
             {
                 string curDir = Directory.GetCurrentDirectory();
                 curDir = Directory.GetParent(curDir).ToString();
@@ -97,6 +97,11 @@ namespace SUStreamManager
                 Image imgTemp = new Image();
                 imgTemp.Height = 32;
                 imgTemp.Width = 32;
+                //if(!isFlags && isDubs)
+                //{
+                //    imgTemp.Height = 24;
+                //    imgTemp.Width = 24;
+                //}
                 imgTemp.Visibility = System.Windows.Visibility.Visible;
                 //var uri = new Uri("C:\\Users\\Ben\\Documents\\Visual Studio 2017\\Projects\\SUStreamManager\\SUStreamManager\\Resources\\Icons\\Bayonetta\\chara_2_bayonetta_00.png");
                 //var bitmap = new BitmapImage(new Uri(file));
@@ -267,11 +272,11 @@ namespace SUStreamManager
         //holy fuck that's a lot of parameters...
         public static void UpdateAllTextOutputFiles(string outputPath ,string player1Name, int player1Score,
                                                     string player2Name, int player2Score, string round,
-                                                    int roundNum, string bracket, bool isP1Loser, bool isP2Loser,
+                                                    string roundNum, string bracket, bool isP1Loser, bool isP2Loser,
                                                     Image p1Icon, Image p2Icon, Image p1Logo, Image p2Logo,
                                                     string twitterHandle1, string twitterHandle2, bool isUsingTwitter,
                                                     string commentator1, string commentator2, bool isUsingComms,
-                                                    Image p3Logo, Image p4Logo)
+                                                    Image p3Logo, Image p4Logo, Image teamIcon1, Image teamIcon2)
         {
             //Let's start this mess
             //p1 name
@@ -289,8 +294,8 @@ namespace SUStreamManager
                 //p2 score
                 File.WriteAllText(outputPath + "\\p2score.txt", player2Score.ToString());
                 //round
-                if (roundNum > 0)
-                    round += " " + roundNum.ToString();
+                if (round.Contains("Losers Round")  || round.Contains("Winners Round"))
+                    round += " " + roundNum;
                 File.WriteAllText(outputPath + "\\round.txt", round);
                 //bracket
                 
@@ -303,8 +308,12 @@ namespace SUStreamManager
 
                 if (isUsingTwitter)
                 {
+
+                    
+
                     File.WriteAllText(outputPath + "\\twitterHandle1.txt", twitterHandle1);
                     File.WriteAllText(outputPath + "\\twitterHandle2.txt", twitterHandle2);
+                    
                 }
                 else
                 {
@@ -312,6 +321,7 @@ namespace SUStreamManager
                         File.Delete(outputPath + "\\twitterHandle1.txt");
                     if (File.Exists(outputPath + "\\twitterHandle2.txt"))
                         File.Delete(outputPath + "\\twitterHandle2.txt");
+                   
                 }
                 if (isUsingComms)
                 {
@@ -393,6 +403,34 @@ namespace SUStreamManager
                     if (File.Exists(outputPath + "\\p4Logo.png"))
                         File.Delete(outputPath + "\\p4Logo.png");
                 }
+
+                if (teamIcon1 != null)
+                {
+                    string uriPath3 = new Uri(teamIcon1.Source.ToString()).LocalPath;
+                    if (File.Exists(outputPath + "\\t1Char.png"))
+                        File.Delete(outputPath + "\\t1Char.png");
+                    File.Copy(uriPath3, outputPath + "\\t1Char.png");
+                    File.SetLastWriteTime(outputPath + "\\t1Char.png", DateTime.Now);
+                }
+                else
+                {
+                    if (File.Exists(outputPath + "\\t1Char.png"))
+                        File.Delete(outputPath + "\\t1Char.png");
+                }
+
+                if (teamIcon2 != null)
+                {
+                    string uriPath3 = new Uri(teamIcon2.Source.ToString()).LocalPath;
+                    if (File.Exists(outputPath + "\\t2Char.png"))
+                        File.Delete(outputPath + "\\t2Char.png");
+                    File.Copy(uriPath3, outputPath + "\\t2Char.png");
+                    File.SetLastWriteTime(outputPath + "\\t2Char.png", DateTime.Now);
+                }
+                else
+                {
+                    if (File.Exists(outputPath + "\\t2Char.png"))
+                        File.Delete(outputPath + "\\t2Char.png");
+                }
             }
             catch(Exception e)
             {
@@ -400,5 +438,15 @@ namespace SUStreamManager
                 //nah
             }
         }
+
+        public static void SaveBracketsRounds(List<string> brackets, List<string> rounds)
+        {
+            string curDir = Directory.GetCurrentDirectory();
+            curDir = Directory.GetParent(curDir).ToString();
+            curDir = Directory.GetParent(curDir).ToString();
+            File.WriteAllLines(curDir + "\\Resources\\BracketType.txt", brackets);
+            File.WriteAllLines(curDir + "\\Resources\\Rounds.txt", rounds);
+        }
+
     }
 }

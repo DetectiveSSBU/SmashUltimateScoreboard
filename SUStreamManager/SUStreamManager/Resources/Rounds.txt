@@ -1,4 +1,4 @@
-﻿Winners Round
+Winners Round
 Winners Quarter Finals
 Winners Semi Finals
 Winers Finals
@@ -8,3 +8,4 @@ Losers Semi Finals
 Losers Finals
 Grand Finals
 Pools
+Winners Top 32

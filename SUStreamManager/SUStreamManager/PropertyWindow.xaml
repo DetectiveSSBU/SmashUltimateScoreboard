@@ -14,15 +14,15 @@
 
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="0.75*"/>
         </Grid.RowDefinitions>
-        <Button Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="4" VerticalAlignment="Center" Width="75" Click="btnSave_Click"/>
-        <Button Name="btnCancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="4" VerticalAlignment="Center" Width="75" Click="btnCancel_Click"/>
+        <Button Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="5" VerticalAlignment="Center" Width="75" Click="btnSave_Click"/>
+        <Button Name="btnCancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="5" VerticalAlignment="Center" Width="75" Click="btnCancel_Click"/>
        <TextBlock HorizontalAlignment="Left" FontSize="10" Grid.Row="0" Margin="10,0,0,0" Grid.RowSpan="1" TextWrapping="Wrap" Text="Enable commentator tags" VerticalAlignment="Center"/>
         <TextBlock HorizontalAlignment="Left" FontSize="10" Grid.Row="1" Margin="10,0,0,0" Grid.RowSpan="1" TextWrapping="Wrap" Text="Enable Twitter Handles" VerticalAlignment="Center"/>
         <TextBlock HorizontalAlignment="Left" FontSize="10" Grid.Row="2" Margin="10,0,0,0" Grid.RowSpan="1" TextWrapping="Wrap" Text="Enable Player Sponsor Icons" VerticalAlignment="Center"/>
@@ -31,7 +31,14 @@
         <CheckBox Name="chkSponserIcons" Content="Enable" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Center"/>
         <CheckBox Name="chkTwitterHandles" Content="Enable" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
         <CheckBox Name="chkCommentator" Content="Enable" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="0" VerticalAlignment="Center"/>
-       
+        <TextBlock HorizontalAlignment="Left" FontSize="10" Margin="10,0,0,0" Grid.Row="4" TextWrapping="Wrap" Text="Use Coloured Flags for Doubles or use individual stock icons" VerticalAlignment="Center"/>
+        <GroupBox Grid.Column="1" Header="Choose One" HorizontalAlignment="Stretch"  Margin="0,0,0,0" Grid.Row="4"  VerticalAlignment="Stretch">
+            <StackPanel>
+                <RadioButton Name="rdbFlags" Content="Flags"/>
+                <RadioButton Name="rdbIcons" Content="Stock Icons"/>
+            </StackPanel>
+        </GroupBox>
+
 
     </Grid>
 </Window>

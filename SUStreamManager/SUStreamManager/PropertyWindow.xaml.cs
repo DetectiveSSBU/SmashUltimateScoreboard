@@ -29,8 +29,8 @@ namespace SUStreamManager
             chkSponserIcons.IsChecked = currentProperties.isSponserIcons;
             chkTwitterHandles.IsChecked = currentProperties.isTwitterHandle;
             chkWindowOnTop.IsChecked = currentProperties.isWindowOnTop;
-            //rdbFlags.IsChecked = currentProperties.isFlags;
-            //rdbStocks.IsChecked = !currentProperties.isFlags;
+            rdbFlags.IsChecked = currentProperties.isFlags;
+            rdbIcons.IsChecked = !currentProperties.isFlags;
             pendingProperties = currentProperties;
         }
 
@@ -38,10 +38,11 @@ namespace SUStreamManager
         public void UpdateProperties()
         {
             pendingProperties.isCommentatorTags = chkCommentator.IsChecked.Value;
-            pendingProperties.isFlags = true;
+            pendingProperties.isFlags = rdbFlags.IsChecked.Value;
             pendingProperties.isSponserIcons = chkSponserIcons.IsChecked.Value;
             pendingProperties.isTwitterHandle = chkTwitterHandles.IsChecked.Value;
             pendingProperties.isWindowOnTop = chkWindowOnTop.IsChecked.Value;
+
         }
 
         public PropertyList GetPendingProperties()

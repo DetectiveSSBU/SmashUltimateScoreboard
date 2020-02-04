@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Properties>
-  <TeamFlagsEnabled>True</TeamFlagsEnabled>
+  <TeamFlagsEnabled>False</TeamFlagsEnabled>
   <CommentatorTagsEnabled>False</CommentatorTagsEnabled>
-  <TwitterHandleEnabled>False</TwitterHandleEnabled>
+  <TwitterHandleEnabled>True</TwitterHandleEnabled>
   <SponserIconsEnabled>False</SponserIconsEnabled>
   <KeepWindowOnTopEnabled>False</KeepWindowOnTopEnabled>
 </Properties>

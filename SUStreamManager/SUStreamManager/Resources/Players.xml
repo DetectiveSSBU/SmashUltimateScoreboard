@@ -1,34 +1,89 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Players>
   <Player>
-    <Tag>Apollo</Tag>
-    <Character>Ken</Character>
-    <Alt>4</Alt>
-    <Twitter>@HexedApollo</Twitter>
-  </Player>
-  <Player>
-    <Tag>Burst</Tag>
-    <Character>King K Rool</Character>
-    <Alt>0</Alt>
-    <Twitter>@NamikazeBurst</Twitter>
-  </Player>
-  <Player>
-    <Tag>Detective</Tag>
-    <Character>Megaman</Character>
-    <Alt>0</Alt>
-    <Twitter>@DetectiveSSBU</Twitter>
-  </Player>
-  <Player>
-    <Tag>RedmanTSS</Tag>
-    <Character>Bayonetta</Character>
+    <Tag>Ant</Tag>
+    <Character>Banjo &amp; Kazooie</Character>
     <Alt>0</Alt>
     <Twitter>
     </Twitter>
   </Player>
   <Player>
+    <Tag>Apollo</Tag>
+    <Character>Banjo &amp; Kazooie</Character>
+    <Alt>0</Alt>
+    <Twitter>@HexedApollo</Twitter>
+  </Player>
+  <Player>
+    <Tag>Bio</Tag>
+    <Character>Banjo &amp; Kazooie</Character>
+    <Alt>0</Alt>
+    <Twitter>
+    </Twitter>
+  </Player>
+  <Player>
+    <Tag>Burst</Tag>
+    <Character>Banjo &amp; Kazooie</Character>
+    <Alt>0</Alt>
+    <Twitter>@NamikazeBurst</Twitter>
+  </Player>
+  <Player>
+    <Tag>Burstsama</Tag>
+    <Character>Banjo &amp; Kazooie</Character>
+    <Alt>0</Alt>
+    <Twitter>
+    </Twitter>
+  </Player>
+  <Player>
+    <Tag>Captain K</Tag>
+    <Character>Banjo &amp; Kazooie</Character>
+    <Alt>0</Alt>
+    <Twitter>
+    </Twitter>
+  </Player>
+  <Player>
+    <Tag>Detective</Tag>
+    <Character>Banjo &amp; Kazooie</Character>
+    <Alt>0</Alt>
+    <Twitter>@DetectiveSSBU</Twitter>
+  </Player>
+  <Player>
+    <Tag>HP</Tag>
+    <Character>Banjo &amp; Kazooie</Character>
+    <Alt>0</Alt>
+    <Twitter>
+    </Twitter>
+  </Player>
+  <Player>
+    <Tag>KV</Tag>
+    <Character>Banjo &amp; Kazooie</Character>
+    <Alt>0</Alt>
+    <Twitter>
+    </Twitter>
+  </Player>
+  <Player>
+    <Tag>Mamba</Tag>
+    <Character>Banjo &amp; Kazooie</Character>
+    <Alt>0</Alt>
+    <Twitter>
+    </Twitter>
+  </Player>
+  <Player>
+    <Tag>RedmanTSS</Tag>
+    <Character>Banjo &amp; Kazooie</Character>
+    <Alt>0</Alt>
+    <Twitter>@RedmanTSS1</Twitter>
+  </Player>
+  <Player>
     <Tag>SpaceAustralia</Tag>
-    <Character>Pokemon Trainer</Character>
-    <Alt>3</Alt>
+    <Character>Banjo &amp; Kazooie</Character>
+    <Alt>0</Alt>
     <Twitter>@SpaceAustralia_</Twitter>
+  </Player>
+  <Player>
+    <Tag>Yogurt Burt</Tag>
+    <Character>Banjo &amp; Kazooie</Character>
+    <Alt>0</Alt>
+    <Twitter>
+    </Twitter>
   </Player>
 </Players>

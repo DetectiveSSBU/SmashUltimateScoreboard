@@ -28,11 +28,12 @@ namespace SUStreamManager
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             outputContents = new List<string>();
 
-            rtbInput.Document.Blocks.Clear();
+            tbInput.Clear();
 
             foreach(string item in contents)
             {
-                rtbInput.Document.Blocks.Add(new Paragraph(new Run(item)));
+                
+                tbInput.Text += item+"\n";
             }
 
         }
@@ -45,7 +46,17 @@ namespace SUStreamManager
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             //get contents
-            //outputContents = tbInput.Text;
+
+            for(int i = 0; i < tbInput.LineCount; i++)
+            {
+                
+                string temp = tbInput.GetLineText(i);
+                if (temp.Contains("\n"))
+                    temp = temp.Remove(temp.Length - 1 );
+                if(temp.Length > 0)
+                outputContents.Add(temp);
+            }
+            
             this.DialogResult = true;
             this.Hide();
         }

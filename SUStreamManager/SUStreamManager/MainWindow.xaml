@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SUStreamManager"
         mc:Ignorable="d"
-        Title="Smash Ultimate Scoreboard v.4.0 by @DetectiveSSBU" MinHeight="280" MinWidth="650" Height="250" Width="650" Closing="Window_Closing" Deactivated="Window_Deactivated">
+        Title="Smash Ultimate Scoreboard 5.0 by @DetectiveSSBU" MinHeight="280" MinWidth="650" Height="250" Width="650" Closing="Window_Closing" Deactivated="Window_Deactivated">
 
     <Window.Resources>
         <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
@@ -44,12 +44,15 @@
         <Button Name="btnP1Up" Content="▲" Grid.Column="1" HorizontalAlignment="Right" Grid.Row="2" Margin="0,-20,0,0" VerticalAlignment="Center" Width="20" Click="btnP1Up_Click"/>
         <Button Name="btnP1Down" Content="▼" Grid.Column="1" HorizontalAlignment="Right" Grid.Row="2" Margin="0,20,0,0" VerticalAlignment="Center" Width="20" Click="btnP1Down_Click"/>
         <ComboBox Name="cbPlayerName1" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="200" SelectionChanged="cbPlayerName1_SelectionChanged" />
-        <ComboBox Name="cbPlayerTeam1" Visibility="Collapsed" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="110,15,0,0" Grid.Row="2" VerticalAlignment="Center" Width="100" SelectionChanged="cbPlayerName1_SelectionChanged" />
+        <ComboBox Name="cbPlayerTeam1" Visibility="Collapsed" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="110,15,0,0" Grid.Row="2" VerticalAlignment="Center" Width="100" SelectionChanged="cbPlayerTeam1_SelectionChanged"  />
         <Label Name="lblSide1" Content="Player 1" HorizontalAlignment="Center" Margin="0,0,50,0" Grid.Row="2" VerticalAlignment="Top"/>
         <CheckBox Name="chkPlayer1Loser" IsEnabled="False" Content="[L]" Grid.Column="1" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="2" VerticalAlignment="Top"/>
 
         <ComboBox Name="cbPlayer1Character" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="90" SelectionChanged="cbPlayer1Character_SelectionChanged"/>
         <ComboBox Name="cbPlayer1Icon" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,5,0" Grid.Row="3" VerticalAlignment="Center" Height="40" Width="60" SelectionChanged="cbPlayer1Icon_SelectionChanged"/>
+
+        <ComboBox Name="cbTeam1Character" Visibility="Collapsed" Grid.Column="1" HorizontalAlignment="Left" Margin="0,45,0,0" Grid.Row="3" VerticalAlignment="Center" Width="90" SelectionChanged="cbTeam1Character_SelectionChanged"/>
+        <ComboBox Name="cbTeam1Icon" Visibility="Collapsed" Grid.Column="1" HorizontalAlignment="Right" Margin="0,45,5,0" Grid.Row="3" VerticalAlignment="Center" Height="30" Width="60" SelectionChanged="cbPlayer1Icon_SelectionChanged"/>
 
 
         <ComboBox Name="cbBracket" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,15,0,0" Grid.Row="1" VerticalAlignment="Center" Width="190" SelectionChanged="cbBracket_SelectionChanged"/>
@@ -60,16 +63,20 @@
         <Button Name="btnPlayer2Up" Content="▲" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="2" Margin="0,-20,0,0" VerticalAlignment="Center" Width="20" Click="btnPlayer2Up_Click"/>
         <Button Name="btnPlayer2Down" Content="▼" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="2" Margin="0,20,0,0" VerticalAlignment="Center" Width="20" Click="btnPlayer2Down_Click"/>
         <ComboBox Name="cbPlayerName2" HorizontalAlignment="Right"  Margin="0,0,10,0" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Grid.ColumnSpan="2" Width="200" SelectionChanged="cbPlayerName2_SelectionChanged"/>
-        <ComboBox Name="cbPlayerTeam2" Visibility="Collapsed" HorizontalAlignment="Right"  Margin="0,15,110,0" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Grid.ColumnSpan="2" Width="100" SelectionChanged="cbPlayerName2_SelectionChanged"/>
+        <ComboBox Name="cbPlayerTeam2" Visibility="Collapsed" HorizontalAlignment="Right"  Margin="0,15,110,0" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Grid.ColumnSpan="2" Width="100" SelectionChanged="cbPlayerTeam2_SelectionChanged" />
         <Label Name="lblSide2" Content="Player 2" HorizontalAlignment="Center" Margin="50,0,0,0" Grid.Row="2" Grid.Column="3" VerticalAlignment="Top"/>
         <CheckBox Name="chkPlayerLoser2" IsEnabled="False" Content="[L]" Grid.Column="2" HorizontalAlignment="Right" Margin="0,5,10,0" Grid.Row="2" VerticalAlignment="Top"/>
 
         <ComboBox Name="cbPlayer2Character" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="90" SelectionChanged="cbPlayer2Character_SelectionChanged"/>
         <ComboBox Name="cbPlayer2Icon" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.Row="3" VerticalAlignment="Center" Height="40" Width="60" SelectionChanged="cbPlayer2Icon_SelectionChanged"/>
 
+        <ComboBox Name="cbTeam2Character" Visibility="Collapsed" Grid.Column="2" HorizontalAlignment="Right" Margin="0,45,0,0" Grid.Row="3" VerticalAlignment="Center" Width="90" SelectionChanged="cbTeam2Character_SelectionChanged" />
+        <ComboBox Name="cbTeam2Icon" Grid.Column="2" Visibility="Collapsed" HorizontalAlignment="Left" Margin="5,45,0,0" Grid.Row="3" VerticalAlignment="Center" Height="30" Width="60" SelectionChanged="cbPlayer2Icon_SelectionChanged"/>
+
+
         <ComboBox Name="cbRound" Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" Margin="0,15,40,0" VerticalAlignment="Center" Width="160" SelectionChanged="cbRound_SelectionChanged"/>
         <Label Content="Round" Grid.Column="3" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,45,0"></Label>
-        <TextBox Name="tbRoundNum" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right" Height="23" Margin="0,15,5,0" TextWrapping="Wrap" Text="1" HorizontalContentAlignment="Center" VerticalAlignment="Center" Width="30"/>
+        <TextBox Name="tbRoundNum" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right" Height="23" Margin="0,15,5,0" TextWrapping="Wrap" Text="1" HorizontalContentAlignment="Center" VerticalAlignment="Center" Width="30" SelectionChanged="tbRoundNum_SelectionChanged"/>
 
 
 
@@ -87,15 +94,19 @@
         <Label Name="lblPlayer2Sponsor" Content="P2 Sponsor" Grid.Column="2" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="1"  VerticalAlignment="Bottom"/>
         <TextBox Name="tbPlayer1Twitter" HorizontalAlignment="Left" Height="23" Margin="10,0,0,0" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="@TwitterHandle" VerticalAlignment="Center" Width="200"/>
         <TextBox Name="tbPlayer2Twitter" HorizontalAlignment="Right" Height="23" Margin="0,0,10,0" Grid.Column="2" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="@TwitterHandle" VerticalAlignment="Center" Width="200"/>
+        <TextBox Visibility="Collapsed" Name="tbPlayer3Twitter" HorizontalAlignment="Left" Height="23" Margin="110,0,0,0" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="@TwitterHandle" VerticalAlignment="Center" Width="100"/>
+        <TextBox Visibility="Collapsed" Name="tbPlayer4Twitter" HorizontalAlignment="Right" Height="23" Margin="0,0,110,0" Grid.Column="2" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="@TwitterHandle" VerticalAlignment="Center" Width="100"/>
+
         <ComboBox Name="cbCommentator1"  Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,0,35" Grid.Row="1" VerticalAlignment="Center" Width="120"/>
         <ComboBox Name="cbCommentator2"  Grid.Column="2" HorizontalAlignment="Center" Margin="0,0,0,35" Grid.Row="1" VerticalAlignment="Center" Width="120"/>
         <Label Name="lblComm1" Content="Commentator 1" Grid.RowSpan="2" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,50,50" Grid.Row="0" VerticalAlignment="Center"/>
         <Label Name="lblComm2" Content="Commentator 2" Grid.RowSpan="2" Grid.Column="2" HorizontalAlignment="Center" Margin="50,0,0,50" Grid.Row="0" VerticalAlignment="Center"/>
-        <Button Visibility="Collapsed" Name="btnAddRemoveBracket" Content=".." Grid.Column="1" HorizontalAlignment="Center" Margin="0,15,50,0" Grid.Row="1" VerticalAlignment="Center" Width="30" Click="btnAddRemoveBracket_Click"/>
-        <Button Visibility="Collapsed" Name="btnAddRemoveRound" Content=".." Grid.Column="2" HorizontalAlignment="Center" Margin="50,15,0,0" Grid.Row="1" VerticalAlignment="Center" Width="30" Click="btnAddRemoveRound_Click"/>
+        <Button Visibility="Visible" Name="btnAddRemoveBracket" Content=".." Grid.Column="1" HorizontalAlignment="Center" Margin="0,15,50,0" Grid.Row="1" VerticalAlignment="Center" Width="30" Height="22" Click="btnAddRemoveBracket_Click"/>
+        <Button Visibility="Visible" Name="btnAddRemoveRound" Content=".." Grid.Column="2" HorizontalAlignment="Center" Margin="50,15,0,0" Grid.Row="1" VerticalAlignment="Center" Width="30" Height="22" Click="btnAddRemoveRound_Click"/>
 
         <ComboBox Name="cbTeam1TeamIcon" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Center" Margin="10,0,0,10" Grid.Row="2" VerticalAlignment="Center" Height="40" Width="60" SelectionChanged="cbPlayer1Icon_SelectionChanged"/>
         <ComboBox Name="cbTeam2TeamIcon" Grid.Column="2" Grid.RowSpan="2" HorizontalAlignment="Center" Margin="0,0,10,10" Grid.Row="2" VerticalAlignment="Center" Height="40" Width="60" SelectionChanged="cbPlayer1Icon_SelectionChanged"/>
+        <Button Grid.ColumnSpan="2" Name="btnResetScore" Grid.RowSpan="2" Content="Reset Score" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="70" Click="btnResetScore_Click"/>
 
 
     </Grid>
